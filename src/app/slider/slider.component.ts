@@ -5,6 +5,7 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
 import { TitlePipe } from '../pipes/title.pipe';
 import { RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { CartService } from '../services/cart.service';
 @Component({
   selector: 'app-slider',
   standalone: true,
@@ -15,7 +16,7 @@ import { Subscription } from 'rxjs';
 export class SliderComponent implements OnChanges{
   @Input() products:any[]=[];
   productsOffers:any[]=[];
-  private subscription: Subscription = new Subscription();
+  constructor(private _cartService:CartService){}
   customOptions: OwlOptions = {
     loop: true,
     mouseDrag: true,
@@ -43,8 +44,9 @@ export class SliderComponent implements OnChanges{
   }
   ngOnChanges() {
     this.productsOffers=this.products;
-    console.log(this.productsOffers);
-    
+  }
+  addToCart(product: any) {
+    this._cartService.addToCart(product); 
   }
  
 }

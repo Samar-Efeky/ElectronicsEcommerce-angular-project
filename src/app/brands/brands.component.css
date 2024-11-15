@@ -1,0 +1,31 @@
+.brand{
+    background-color: var(--main-background);
+}
+.brands{
+    background: linear-gradient(to right,#000605 ,var(--button-hover),#000605 );
+    height: 100px;
+    width: 90%;
+}
+.brands-title{
+    font-size: 3rem;
+    color: white;
+}
+.page-link{
+    color: black;
+  }
+  .pagination .page-item .page-link {
+      border-color: var(--border-color);
+      cursor: pointer;
+    }
+    
+    .pagination .page-item.active .page-link {
+      background-color:var(--main-color); 
+      color: #fff; 
+      border-color: var(--border-color);
+    }
+    @media screen and (max-width:992px){
+       .brands-title{
+        font-size: 2rem;
+       }
+    }
+  

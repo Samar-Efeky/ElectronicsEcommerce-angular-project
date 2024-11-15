@@ -1,17 +1,43 @@
 <div class="cart container-fluid">
-    <div class="row">
-        <div class="col-xl-8">
-            <div>
-                <h3 class="fw-bold py-2 border-bottom border-1">Shopping Cart</h3>
-                <div>
-                    <img src="" alt="">
-                    <p></p>
-                    <span></span>
-                    <input type="number" min="1">
+    <div class="row py-4">
+        <div class="col-xl-9 col-lg-8">
+            <div class="p-4">
+                <h5 class="shop fw-bold py-2 border-bottom border-1">Shopping Cart</h5>
+                <ng-container *ngIf="cartItems.length > 0; else noCarts">
+                    <div *ngFor="let item of cartItems; let i = index" class="p-3 cart-item border-bottom border-3 position-relative my-2">
+                        <img [src]="item.imageUrl" [routerLink]="['/productDetails',item.id]" [alt]="item.title">
+                        <a class="ps-xl-5" [routerLink]="['/productDetails',item.id]">{{ item.title }}</a>
+                        <span class="fw-bold d-block">{{ item.randomPrice - item.randomOffer | currency }}</span>
+                        <input class="w-25" type="number" min="1" [(ngModel)]="item.quantity" (ngModelChange)="updateQuantity(item, item.quantity)">
+                        <button (click)="removeFromCart(item)" class="btn btn-danger position-absolute top-0 end-0">Delete</button>
+                    </div>
+                </ng-container>
+                <div class="total-price text-end">
+                    <span class="fw-bold">Subtotal ({{ cartItems.length }}): {{ totalPrice | currency }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-4 ">
+            <div class="p-2 text-center bg-white my-3 box">
+                <p><li class="py-2 fw-bold">Your order qualifies for FREE Shipping
+                </p>
+                <div class="total-price py-3">
+                    <span class="fw-bold">Subtotal ({{ cartItems.length }}): {{ totalPrice | currency }}</span>
+                </div>
+                <button class="py-1 px-2 my-3 rounded-1">Proceed to buy</button>
+                <h5>Customers Who Bought Items in Your Recent History</h5>
+                <div *ngFor="let product of mostRating " class="m-3 py-2 bg-body-secondary">
+                    <img [src]="product.imageUrl" [routerLink]="['/productDetails',product.id]" class="w-50" [alt]="product.title">
+                    <a [routerLink]="['/productDetails',product.id]" class="d-block">{{product.title}}</a>
+                    <span class="fw-bold">{{product.randomPrice|currency}}</span>
+
                 </div>
 
             </div>
+
         </div>
     </div>
- 
+    <ng-template #noCarts>
+        <p class="p-3 fw-bold h5">Your cart is Empty.</p>
+    </ng-template>
 </div>

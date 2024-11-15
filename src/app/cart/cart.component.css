@@ -1,0 +1,36 @@
+.cart{
+    background-color:var(--main-background);
+}
+.cart-item{
+    background-color:white;
+    font-size: 1.2rem;
+}
+.shop{
+    font-size: 1.3rem;
+}
+.cart-item a,.total-price span{
+    font-size: 1.3rem;
+}
+.cart-item img{
+    width: 25%;
+    height: 150px;
+}
+.box{
+    box-shadow: 0px 2px 5px gray;
+}
+@media screen and (max-width:992px){
+    .cart-item img{
+        width: 45%;
+        height: 150px;
+    }
+    .cart-item a,.total-price span{
+        font-size: 1rem;
+        display: block;
+    }
+    .cart-item{
+        font-size: 1rem;
+    }
+    .shop{
+        font-size: 1rem;
+    }
+}

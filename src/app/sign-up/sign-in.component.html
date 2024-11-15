@@ -8,20 +8,20 @@
         <div *ngIf="loginError!=''" class="alert alert-danger w-75 m-auto my-3 p-0">
             {{loginError}}
         </div>
-        <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="w-75  m-auto text-center my-4">
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="w-75  m-auto text-center my-4">
             <div class="input-container  w-100 text-center position-relative">
                 <input id="email" type="email" class="w-100 p-2 rounded-1 " 
                 [ngClass]="{
-                  'is-valid': registerForm.get('email')?.valid && registerForm.get('email')?.touched,
-                  'is-invalid': registerForm.get('email')?.invalid && registerForm.get('email')?.touched
+                  'is-valid': loginForm.get('email')?.valid && loginForm.get('email')?.touched,
+                  'is-invalid': loginForm.get('email')?.invalid && loginForm.get('email')?.touched
                   }"
                 formControlName="email" 
                 placeholder="Email">
                 <label class="input-label position-absolute  fw-bold px-2 bg-white" for="email">Email</label>
                 <div class="alert alert-danger p-0 text-start my-2" 
-                 *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
-                  <p *ngIf="registerForm.get('email')?.errors?.['required']" class="ms-4">Email is required</p>
-                  <p *ngIf="registerForm.get('email')?.errors?.['email']" class="ms-4">Invalid email </p>
+                 *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+                  <p *ngIf="loginForm.get('email')?.errors?.['required']" class="ms-4">Email is required</p>
+                  <p *ngIf="loginForm.get('email')?.errors?.['email']" class="ms-4">Invalid email </p>
                 </div> <!-- alert -->
               </div> <!-- input-container -->
               <div class="input-container  w-100 text-center position-relative">
@@ -30,8 +30,8 @@
                 class="w-100 p-2 rounded-1" 
                 placeholder="Password"
                 [ngClass]="{
-                    'is-valid': registerForm.get('password')?.errors==null&&registerForm.get('password')?.touched,
-                    'is-invalid':registerForm.get('password')?.errors!=null&&registerForm.get('password')?.touched
+                    'is-valid': loginForm.get('password')?.errors==null&&loginForm.get('password')?.touched,
+                    'is-invalid':loginForm.get('password')?.errors!=null&&loginForm.get('password')?.touched
                     }">
                 <label for="Password" class="input-label position-absolute  fw-bold px-2 bg-white">Password</label>
                 <i class="fas fa-eye position-absolute"
@@ -41,15 +41,16 @@
                 *ngIf="showPassword"
                 (click)="togglePasswordVisibility()"></i>
                 <div class="alert alert-danger p-0 text-start my-2 "
-                *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
-                    <p *ngIf="registerForm.get('password')?.errors?.['required']" class="ms-4">Password is required</p>
-                    <p *ngIf="registerForm.get('password')?.errors?.['minlength']" class="ms-4">Password must be minimum letters is 6</p>
+                *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+                    <p *ngIf="loginForm.get('password')?.errors?.['required']" class="ms-4">Password is required</p>
+                    <p *ngIf="loginForm.get('password')?.errors?.['minlength']" class="ms-4">Password must be minimum letters is 6</p>
                 </div> <!-- alert -->
             </div><!-- input-container -->
             <div>
                 <button class="w-75 py-2 rounded-1" type="submit"
-                [disabled]="registerForm.invalid"
-            [ngClass]="{'bg-disabled': registerForm.invalid}">Register</button>
+                [disabled]="loginForm.invalid"
+            [ngClass]="{'bg-disabled': loginForm.invalid}">Sign In</button>
+                <p class="my-2">Don't have an account?<a  routerLink="/signup" class="text-decoration-underline">Create an account</a></p>
             </div>
         </form>
     </div> <!-- signin -->

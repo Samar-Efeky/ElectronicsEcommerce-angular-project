@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 :root{
-    --main-color:#0DA487;
+    --main-color:#0d8a71;
     --main-background:#F2F2F2;
     --icon-color:#FFA53B;
     --hover-color:#EAEAEA;
@@ -102,6 +102,7 @@ input{
 .bg-disabled{
     opacity: 0.7;
 }
+
 @media screen and (max-width:992px){
     h1{
         font-size: 1.4rem;

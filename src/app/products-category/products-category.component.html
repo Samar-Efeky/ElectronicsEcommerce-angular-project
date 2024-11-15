@@ -1,20 +1,33 @@
 <div class="container-fluid">
-  <span class="filter p-1 rounded-1" *ngIf="textFilter">{{selectedFilterText}}
-    <i class="fas fa-times" (click)="deleteFilter()"></i>
-  </span>
-    <div class="w-50 m-auto position-relative">
+  <div>
+    <div *ngFor="let filterText of filterTexts" class="filter d-inline m-2  p-1 rounded-1">
+      {{ filterText }}
+      <i class="fas fa-times" (click)="deleteFilter(filterText)"></i>
+    </div>
+    <div class="search-filter m-auto position-relative">
         <div class="position-relative w-100">
             <input type="search" class="p-2 w-100 pe-5 bg-white"  
-            placeholder="Search in category..">
+            placeholder="Search in category.."
+            [(ngModel)]="searchText" 
+            (focus)="onSearchFocus()"
+            (blur)="onSearchBlur()"
+            (input)="onSearch()">
             <div class="position-absolute end-0 search top-0 h-100 text-center">
               <i class="fas fa-search py-3 text-white"></i>
             </div> <!-- position-absolute -->
+            <ul *ngIf="isSearchListVisible && products.length > 0" class= "list-unstyled p-4 w-100 rounded-1 search-list  overflow-y-scroll">
+              <li class="p-2 search-item" [routerLink]="['/productDetails', product.id]" *ngFor="let product of products">{{product.title}}</li>
+            </ul>
         </div> <!-- position-relative -->
+        <div class="filter- d-xl-none py-2" (click)="getfilter()">
+          <i class="fas fa-sort-amount-up"></i>
+          <span>Filter</span>
+        </div>
     </div> <!-- w-50 -->
     <div class="row my-3">
-      <div *ngFor="let product of paginatedItems; let i=index" class=" col-xl-4 col-lg-6 p-2">
-        <div class="product p-3 w-100  rounded-2  position-relative " [routerLink]="['/productDetails',product.id]">
-          <div class="text-center">
+      <div *ngFor="let product of paginatedItems; let i=index" class=" col-xl-4 col-sm-6 p-2">
+        <div class="product p-3 w-100  rounded-2  position-relative " >
+          <div class="text-center" [routerLink]="['/productDetails',product.id]">
             <img [src]="product.imageUrl" [alt]="product.title" class="w-75 " height="170" >
           </div>
           <h6 class="py-2"><a [routerLink]="['/productDetails',product.id]">{{product.title|title}}</a></h6>
@@ -26,7 +39,7 @@
           </div> <!-- stars-icon -->
           <span class="fw-bold">{{product.randomPrice-product.randomOffer|currency}}</span>
           <span  class="px-2 text-decoration-line-through">{{product.randomPrice|currency}}</span>
-          <button class="py-1 px-3 my-3 rounded-1 d-block">Add to cart</button>
+          <button (click)="addToCart(product)" class="py-1 px-3 my-3 rounded-1 d-block">Add to cart</button>
           <span class="p-1 bg-danger text-white rounded-1 position-absolute top-0 end-0">Saved {{product.randomOffer|currency}}</span>
         </div> <!-- product -->
     </div>

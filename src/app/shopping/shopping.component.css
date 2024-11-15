@@ -1,10 +1,20 @@
 .shopping{
   background-color:var(--main-background);
 }
+.translate{
+  left: -100%;
+  position: absolute;
+  transition: left 0.6s ease-in-out;
+}
+.filter{
+  transition: all 0.5s;
+}
 .filter-side{
   background-color: white;
   box-shadow: 0px 2px 5px gray;
   max-height: 600px;
+  transition: left 0.6s ease-in-out;
+  
   
 }
 .categoryies-list{

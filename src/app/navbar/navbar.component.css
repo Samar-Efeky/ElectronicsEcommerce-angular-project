@@ -54,3 +54,12 @@ nav ul li{
   border-right: 2px solid var(--border-color);
   padding-right: 2%; 
 }
+.cart{
+  transform: translate(-50%,-50%);
+}
+.logout{
+  color:black;
+  background-color:gray;
+  width: 100px;
+  transform: translatex(-50%);
+}

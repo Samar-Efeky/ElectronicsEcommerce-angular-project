@@ -1,35 +1,36 @@
-<div *ngIf="productDetails">
-    <div class="product-details container-fluid py-5">
-      <div class="row">
-        <div class="col-xl-6">
-          <div class="text-center">
-            <img *ngIf="productDetails.imageUrl" [src]="productDetails.imageUrl" class="product-image" alt="">
+<div *ngIf="product">
+  <div class="product-details container-fluid py-5">
+    <div class="row">
+      <div class="col-xl-6">
+        <div class="text-center">
+          <img [src]="product.imageUrl" class="product-image" alt="">
+        </div>
+      </div> 
+      <div class="col-xl-6 py-4 px-2">
+        <div class="productDetail p-3">
+          <h6 class="fw-bold">{{product.title}}</h6>
+          <div class="stars-icon py-1">
+            <ng-container *ngFor="let star of [].constructor(product.rating); let i = index">
+              <i class="fas fa-star "></i>
+            </ng-container>
+            <span class="fw-bold">({{product.countRated}})</span>
+          </div> 
+          <div class="py-4">
+            <span class="fw-bold">{{product.randomPrice - product.randomOffer | currency}}</span>
+            <span class="text-decoration-line-through">{{product.randomPrice | currency}}</span>
           </div>
-        </div> <!-- col-xl-6 -->
-        <div class="col-xl-6 py-4 px-2">
-            <div class="productDetail">
-                <h6 class="fw-bold">{{productDetails.title}}</h6>
-                <div class="stars-icon py-1">
-                    <ng-container *ngFor="let star of [].constructor(productDetails.rating); let i = index">
-                        <i class="fas fa-star "></i>
-                    </ng-container>
-                    <span class="fw-bold">({{productDetails.countRated}})</span>
-                </div> <!-- stars-icon -->
-                <div class="py-4">
-                    <span class="fw-bold">{{productDetails.randomPrice-productDetails.randomOffer|currency}}</span>
-                    <span class="text-decoration-line-through">{{productDetails.randomPrice|currency}}</span>
-                </div>
-                <span class=" p-1 my-3 bg-danger text-white rounded-1 ">
-                    Saved {{productDetails.randomOffer|currency}}
-                </span>
-                <button class="py-2 px-5 d-block rounded-1 my-4">Add to cart</button>
-                <a routerLink="/offers">Do not miss Deal of the day</a>
-            </div>
+          <span class="p-1 my-3 bg-danger text-white rounded-1">
+            Saved {{product.randomOffer | currency}}
+          </span>
+          <button (click)="addToCart(product)" class="py-2 px-5 d-block rounded-1 my-4">Add to cart</button>
+          <a routerLink="/offers">Do not miss Deal of the day</a>
         </div>
       </div>
-      <div class="my-3 py-3 px-5">
-        <h2 class="fw-bold">Products related to this item</h2><hr class="py-2">
     </div>
+    <div class="my-3 py-3 px-5">
+      <h2 class="fw-bold">Products related to this item</h2>
+      <hr class="py-2">
+      <app-slider [products]="productsCategory"></app-slider>
     </div>
   </div>
-  
+</div>

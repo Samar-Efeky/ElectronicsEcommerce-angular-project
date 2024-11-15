@@ -1,10 +1,11 @@
 import { CommonModule, CurrencyPipe} from '@angular/common';
-import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Component,  OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TitlePipe } from '../pipes/title.pipe';
 import { ProductsService } from '../services/products.service';
 import { RouterLink } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
+import { CartService } from '../services/cart.service';
 @Component({
   selector: 'app-products-category',
   standalone: true,
@@ -22,60 +23,102 @@ export class ProductsCategoryComponent implements OnInit ,OnDestroy{
   totalPages = 0;
   selectedFilterText: string = '';
   textFilter:boolean=false;
+  filterTexts: string[] = [];
+  selectedFilters: { category?: string, priceRange?: { min: number, max: number }, rating?: number } = {};
   private subscriptions: Subscription[] = [];
-  constructor(private _productsService: ProductsService) {}
+  constructor(private _productsService: ProductsService, private _cartService:CartService) {}
   index:number=0;
+  @Output() buttonClicked = new EventEmitter<void>();
   ngOnInit() {
     this.categoriesList = this._productsService.categories;
-    for (let category of this.categoriesList) {
-      let  subscription =this._productsService.getAllProducts(category).subscribe(() => {
-        this.products = this._productsService.products; 
-        this.originalProducts = [...this.products]; 
+    const categoryObservables = this.categoriesList.map(category => 
+      this._productsService.getAllProducts(category)
+    );
 
+    let subscription = combineLatest(categoryObservables).subscribe(() => {
+      this._productsService.products$.subscribe(products => {
+        this.products = products;
+        this.originalProducts = [...this.products];
+  
         this.allProducts();
         this.totalPages = Math.ceil(this.products.length / this.itemsPerPage);
         this.updatePaginatedItems();
       });
-      this.subscriptions.push(subscription); 
-    }
+    });
+  
+    this.subscriptions.push(subscription);
   }
 
+  updateProducts() {
+    this.products = this.originalProducts.filter(product => {
+      const categoryMatch = !this.selectedFilters.category || product.category === this.selectedFilters.category;
+      const ratingMatch = !this.selectedFilters.rating || product.rating >= this.selectedFilters.rating;
+      const priceMatch = !this.selectedFilters.priceRange || 
+                         (product.randomPrice >= this.selectedFilters.priceRange.min && product.randomPrice <= this.selectedFilters.priceRange.max);
+      return categoryMatch && ratingMatch && priceMatch;
+    });
+
+    this.currentPage = 1;
+    this.totalPages = Math.ceil(this.products.length / this.itemsPerPage);
+    this.updatePaginatedItems();
+    this.filterActive();
+  }
   allProducts() {
     this.products.sort(() => Math.random() - 0.5);
     this.originalProducts.sort(() => Math.random() - 0.5);
 
   }
-  filterProductsByRating(value:number,filterText:string){
-    this.selectedFilterText=filterText;
-    this.products=this.originalProducts.filter((product)=>{
-        return product.rating>=value;
-    });
-    this.currentPage = 1; 
-    this.totalPages = Math.ceil(this.products.length / this.itemsPerPage);
-    this.updatePaginatedItems();
-    this.filterActive();
+ 
+  filterByCategory(category: string, filterText: string) {
+    this.selectedFilters.category = category;
+    this.filterTexts.push(filterText);
+    this.updateProducts();
+  }
+
+  
+  filterProductsByRating(value: number, filterText: string) {
+    this.selectedFilters.rating = value;
+    this.filterTexts.push(filterText);
+    this.updateProducts();
   }
   filterProductsByPrice(minPrice: number, maxPrice: number, filterText: string) {
-    this.selectedFilterText = filterText;
-    this.products = this.originalProducts.filter(product => 
-      product.randomPrice >= minPrice && product.randomPrice <= maxPrice
-    );
-    this.currentPage = 1; 
-    this.totalPages = Math.ceil(this.products.length / this.itemsPerPage);
-    this.updatePaginatedItems();
-    this.filterActive();
+    this.selectedFilters.priceRange = { min: minPrice, max: maxPrice };
+    this.filterTexts.push(filterText);
+    this.updateProducts();
   }
-  deleteFilter() {
-    this.products = [...this.originalProducts]; 
-    this.currentPage = 1; 
-    this.totalPages = Math.ceil(this.products.length / this.itemsPerPage);
-    this.updatePaginatedItems();
-    this.textFilter=false;
+  deleteFilter(filterText: string) {
+    this.filterTexts = this.filterTexts.filter(text => text !== filterText);
+    if (this.filterTexts.length === 0) {
+      this.selectedFilters = {}; 
+    } else {
+    }
+
+    this.updateProducts();
   }
 filterActive(){
   this.textFilter=true;
 
 }
+searchText: string = ''; 
+isSearchListVisible: boolean = false;
+onSearch() {
+  const searchTerm = this.searchText.toLowerCase();
+  this.products = this.originalProducts.filter(product => 
+    product.title.toLowerCase().includes(searchTerm)
+  );
+  this.updatePaginatedItems(); 
+}
+onSearchFocus() {
+  this.isSearchListVisible = true;
+}
+
+onSearchBlur() {
+  setTimeout(() => {
+    this.isSearchListVisible = false;
+  }, 200);
+}
+
+
   // pagination //////////////////////////////////////////////////////////
   updatePaginatedItems() {
     let startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -102,7 +145,9 @@ filterActive(){
       behavior: 'smooth'
     });
   }
-
+  addToCart(product: any) {
+    this._cartService.addToCart(product); 
+  }
   getPages(): number[] {
     let pagesToShow = 3;
     let pages: number[] = [];
@@ -113,8 +158,12 @@ filterActive(){
     }
     return pages;
   }
+  getfilter(){
+    this.buttonClicked.emit();
+  }
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
+ 
   
 }

@@ -1,11 +1,10 @@
 <owl-carousel-o [options]="customOptions">
     <ng-container *ngFor="let product of productsOffers">
       <ng-template carouselSlide>
-        <div class="slide-content product p-3 rounded-1 position-relative" 
-        
-        [routerLink]="['/productDetails',product.id]">
-          <img [src]="product.imageUrl" [alt]="product.title" class="" height="200">
-          <h6 class="py-2"><a href="#">{{product.title|title}}</a></h6>
+        <div class="slide-content product p-3 rounded-1 position-relative" >
+          <img [src]="product.imageUrl" [alt]="product.title" 
+           class="" height="200">
+          <h6 class="py-2"><a [routerLink]="['/productDetails',product.id]">{{product.title|title}}</a></h6>
           <div class="stars-icon">
             <ng-container *ngFor="let star of [].constructor(product.rating); let i = index">
                 <i class="fas fa-star "></i>
@@ -14,7 +13,7 @@
           </div> <!-- stars-icon -->
           <span class="fw-bold">{{product.randomPrice-product.randomOffer|currency}}</span>
           <span class="px-2 text-decoration-line-through">{{product.randomPrice|currency}}</span>
-          <button class="py-1 px-3 mt-3 rounded-1 d-block">Add to cart</button>
+          <button (click)="addToCart(product)" class="py-1 px-3 mt-3 rounded-1 d-block">Add to cart</button>
           <span class="p-1 bg-danger text-white rounded-1 position-absolute top-0 end-0">{{product.randomOffer|currency}}</span>
         </div> <!-- slide-content -->
       </ng-template>

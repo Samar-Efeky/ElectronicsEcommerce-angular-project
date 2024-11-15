@@ -1,0 +1,17 @@
+.gift{
+    background-color: var(--main-background);
+}
+.brands{
+    background: linear-gradient(to right,#000605 ,var(--button-hover),#000605 );
+    height: 100px;
+    width: 90%;
+}
+.brands-title{
+    font-size: 3rem;
+    color: white;
+}
+@media screen and (max-width:992px){
+    .brands-title{
+        font-size: 2rem;
+    }
+}

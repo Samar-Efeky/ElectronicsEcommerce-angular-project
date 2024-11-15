@@ -13,10 +13,10 @@
     </div> 
     <div class="random-product row mx-auto" *ngIf="randomProduct; else loading">
        <div class=" p-4 text-center col-lg-6">
-        <img [src]="randomProduct?.imageUrl" class="deal-img w-100" alt="">
+        <img [src]="randomProduct?.imageUrl" [routerLink]="['/productDetails',randomProduct.id]" class="deal-img w-100" alt="">
        </div>
         <div class="deal-details p-4 mt-3 col-lg-6">
-            <h4 class="deal-title"><a href="#">{{randomProduct?.title}}</a></h4>
+            <h4 class="deal-title"><a [routerLink]="['/productDetails',randomProduct.id]">{{randomProduct?.title}}</a></h4>
             <div class="stars-icon">
                 <ng-container *ngFor="let star of [].constructor(randomProduct?.rating); let i = index">
                     <i class="fas fa-star"></i>
@@ -28,7 +28,7 @@
             <h5 class="fw-bold ">{{randomProduct?.randomPrice|dayOffer|currency}}</h5>
             <span class=" p-1 text-white bg-danger">save 50%</span>
             <span class="ms-1 fw-bold">Was{{randomProduct?.randomPrice|currency}}</span>
-            <button class="d-block py-2 px-4 rounded-1 my-4">Add to cart</button>
+            <button class="d-block py-2 px-4 rounded-1 my-4" (click)="addToCart(randomProduct)" >Add to cart</button>
         </div> <!-- deal-details -->
     </div>
     <ng-template #loading>

@@ -1,15 +1,15 @@
 <div class="sidebar bg-white vh-100 position-fixed top-0 end-0 overflow-y-scroll" [@slideInOut]="sidebarState">
     <h1 class="fw-bold px-4 pt-lg-3 pt-2 logo w-75"><span class="">Electro</span><span class="text-black">Mart</span></h1>
     <ul class="list-unstyled py-2 options">
-        <li *ngIf="!islogin" class="p-2"><button class="mx-5 py-1 w-75 rounded-1">Sign in</button></li>
-        <li *ngIf="islogin" class="p-2">My Profile</li>
-        <li class="p-2">Shopping Now</li>
-        <li class="p-2">My Cart</li>
-        <li class="p-2">Offers</li>
-        <li class="p-2">Deal of the Day</li>
+        <li *ngIf="!islogin" class="p-2"><button class="mx-5 py-1 w-75 rounded-1"
+            (click)="closedSidebar()" routerLink="shopping">Sign in</button></li>
+        <li  class="p-2" (click)="closedSidebar()" routerLink="about">About</li>
+        <li  class="p-2" (click)="closedSidebar()" [routerLink]="['/shopping','']">Shopping Now</li>
+        <li class="p-2" (click)="closedSidebar()" routerLink="cart">My Cart</li>
+        <li class="p-2" (click)="closedSidebar()" routerLink="deal">Deal of the Day</li>
         <li *ngIf="islogin"  (click)="[isLogOut(),closedSidebar()]" class="p-2">Sign out</li>
         <h6 class="fw-bold py-2 text-center bg-body-secondary">All categories</h6>
-        <li class="p-2" *ngFor="let category of categoriesList">{{category}}</li>
+        <li class="p-2" (click)="closedSidebar()" routerLink="shopping" *ngFor="let category of categoriesList">{{category}}</li>
     </ul>
 
     <div class="position-absolute top-0 end-0 p-3">

@@ -1,6 +1,7 @@
-<div class="shopping container-fluid py-1">
-    <div class="row px-2 py-5">
-      <div class="filter-side col-xl-3 p-4 ">
+<div class="shopping container-fluid py-1" >
+    <div class="row px-2 py-5 position-relative filter">
+      <div class="filter-side col-xl-3 p-4 "  [ngClass]="{'translate':screenWidth<=1200&&!visable}">
+        <i class="fas fa-times p-2" *ngIf="screenWidth<=1200" (click)="isvisable()"></i>
        <div class="w-100">
         <button class="w-100 rounded-1 p-1 d-flex justify-content-between" (click)="isActive()">
           <span>Select category</span>
@@ -8,24 +9,23 @@
         </button>
          <div class="overflow-hidden ">
           <ul *ngIf="active" class="categoryies-list options list-unstyled w-100 " @slideDown>
-            <li class="px-4">All</li>
             @for (category of categoriesList; track $index){
-              <li class="px-4" >{{category}}</li>
+              <li class="px-4" (click)="filterByCategory(category,category)" >{{category}}</li>
             }
            </ul>
          </div> <!-- overflow -->
        </div>
        <div class="py-3  border-bottom">
         <div class="py-1">
-          <input type="checkbox" id="best-sellers" name="best-sellers">
+          <input type="checkbox" id="best-sellers" name="best-sellers" (click)="filterByCategory('Laptops','Best Sellers')">
           <label for="best-sellers" class="px-3">Best sellers</label>
         </div>
         <div class="py-1">
-          <input type="checkbox" id="brands" name="brands">
+          <input type="checkbox" id="brands" name="brands" (click)="filterByCategory('Tablets','Brands')">
           <label for="brands" class="px-3">Brands</label>
         </div>
         <div class="py-1">
-          <input type="checkbox" id="offers" name="offers">
+          <input type="checkbox" id="offers" name="offers" (click)="filterByCategory('Computers','Offers')">
           <label for="offers" class="px-3">Offers</label>
         </div>
        </div> <!-- py-4 -->
@@ -46,7 +46,7 @@
           <i class="far fa-star"></i>
           <span>& Up</span>
         </div> <!-- stars-icon -->
-        <div class="stars-icon py-1">
+        <div class="stars-icon py-1" (click)="filterByRating(3,'3 rating ang up')">
           <i class="fas fa-star"></i>
           <i class="fas fa-star"></i>
           <i class="fas fa-star"></i>
@@ -54,7 +54,7 @@
           <i class="far fa-star"></i>
           <span>& Up</span>
         </div> <!-- stars-icon -->
-        <div class="stars-icon py-1">
+        <div class="stars-icon py-1" (click)="filterByRating(2,'2 rating ang up')">
           <i class="fas fa-star"></i>
           <i class="fas fa-star"></i>
           <i class="far fa-star"></i>
@@ -62,7 +62,7 @@
           <i class="far fa-star"></i>
           <span>& Up</span>
         </div> <!-- stars-icon -->
-        <div class="stars-icon py-1">
+        <div class="stars-icon py-1" (click)="filterByRating(1,'1 rating ang up')">
           <i class="fas fa-star"></i>
           <i class="far fa-star"></i>
           <i class="far fa-star"></i>
@@ -73,7 +73,7 @@
        </div><!-- customer-review -->
       </div> <!-- filter-side -->
       <div class=" col-xl-9 p-3">
-        <app-products-category></app-products-category>
+        <app-products-category (buttonClicked)="isvisable()"></app-products-category>
       </div>
     </div> <!-- row -->
   </div> <!-- container -->
