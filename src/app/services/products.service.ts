@@ -23,7 +23,7 @@ export class ProductsService {
   getAllProducts(category: string): Observable<any[]> {
     return this._httpClient.get(`../assets/api-files/${category}-us-en-true-1-100-images--.json`).pipe(
       map((data: any) => {
-        let productsData = data.images.slice(0, 30);
+        let productsData = data.images;
         let startIndex = this.productsSubject.getValue().length;
 
         let processedProducts = productsData.map((product: any, index: number) => ({
